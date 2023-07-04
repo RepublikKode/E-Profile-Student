@@ -16,6 +16,7 @@ if (isset($_POST["register"])) {
             echo "<script>
                     alert('User baru berhasil ditambahkan!');
                     alert('Selamat datang! Anda login sebagai $role.');
+                    window.href.location = 'login.php';
                   </script>";
         }
     } else {
@@ -24,15 +25,12 @@ if (isset($_POST["register"])) {
 }
 ?>
 
-
-?>
-
 <!DOCTYPE html>
-<html lang="en">
-<link rel="stylesheet" href="signup.css" />
-
+<html lang="en">    
 <head>
-    <meta charset="UTF-8">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../views/src/css/signup.css" />
     <title>Form Sign up</title>
 </head>
 

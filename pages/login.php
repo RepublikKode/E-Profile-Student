@@ -38,7 +38,7 @@ if (isset($_POST["login"])) {
 
 <!DOCTYPE html>
 <html lang="en">
-    <link rel="stylesheet" href="login.css"/>
+    <link rel="stylesheet" href="../views/src/css/login.css"/>
 <head>
     <meta charset="UTF-8">
     <title>Form login</title>

@@ -7,7 +7,7 @@ if (!isset($_SESSION["login"])) {
 }
 
 if($_SESSION['level'] === 'siswa') {
-  header('Location: ../views/error.php');
+  header('Location: ../views/');
 }
 
 $id = $_GET['id'];

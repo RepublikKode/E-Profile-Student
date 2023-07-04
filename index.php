@@ -21,7 +21,7 @@
                     <a href="#" class="btn btn-warning">Tes Sekarang</a>
                 </div>
                 <div class="col-md-6 my-2">
-                    <img src="assets/cards/chika.png" alt="chika" width="500" class="shadow-lg img-fluid">
+                    <img src="assets/cards/chika.png" alt="chika" width="400" class="shadow-lg img-fluid">
                 </div>
             </div>
         </div>

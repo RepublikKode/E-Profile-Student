@@ -28,7 +28,7 @@
             <div class="footer-col">
                 <h4>CONTACT</h4>
                 <ul>
-                    <li><a href="https://instagram.com/lang_andp" target="_blank">Owner (Fullstack Developer)</a></li>
+                    <li><a href="https://instagram.com/lang_andp" target="_blank">Fullstack Developer</a></li>
                     <li><a href="https://instagram.com/yowshiiiiih" target="_blank">UI/UX Designer</a></li>
                     <li><a href="https://www.instagram.com/zefanya_shallom" target="_blank">Frontend Developer</a></li>
                     <li><a href="https://www.instagram.com/syhl.crz" target="_blank">Backend Developer</a></li>

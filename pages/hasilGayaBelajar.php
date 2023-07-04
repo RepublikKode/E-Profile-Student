@@ -13,7 +13,7 @@ $validGayaBelajar = ['visual', 'auditori', 'kinestetik', 'visual auditori', 'vis
 
 // Periksa apakah gaya belajar yang diterima valid
 if (!in_array($gayaBelajar, $validGayaBelajar)) {
-    header('Location: ../views/error.php');
+    header('Location: ../views/');
     exit();
 }
 

@@ -148,13 +148,13 @@ function jumlahPilihan($data) {
   $opsiEmpat = 0;
 
   foreach ($data['checkboxGroup'] as $index => $jawaban) {
-    if ($index % 3 == 0) {
+    if ($index % 4 == 0) {
       $opsiSatu += ($jawaban == 'opsi_satu') ? 2 : 0;
-    } elseif ($index % 3 == 1) {
+    } elseif ($index % 4 == 1) {
       $opsiDua += ($jawaban == 'opsi_dua') ? 1 : 0;
-    } elseif ($index % 3 == 2) {
+    } elseif ($index % 4 == 2) {
       $opsiTiga += ($jawaban == 'opsi_tiga') ? 1 : 0;
-    } elseif ($index % 3 == 3) {
+    } elseif ($index % 4 == 3) {
       $opsiEmpat += ($jawaban == 'opsi_empat') ? 1 : 0;
     }
   }
@@ -174,36 +174,25 @@ function tentukanKepribadian($opsiSatu, $opsiDua, $opsiTiga, $opsiEmpat)
     return "Steadiness";
   } else if ($opsiEmpat > $opsiSatu + $threshold && $opsiEmpat > $opsiDua + $threshold && $opsiEmpat > $opsiTiga + $threshold) {
     return "Conscientiousness";
-  } else if (abs($opsiSatu - $opsiDua) <= $threshold) {
+  } else if (abs($opsiSatu - $opsiDua) <= $threshold && $opsiSatu > $opsiTiga + $threshold && $opsiDua > $opsiEmpat + $threshold) {
     return "Dominance-Influence";
-  } else if (abs($opsiSatu - $opsiTiga) <= $threshold) {
-    return "Dominance-Steadiness";
-  } else if (abs($opsiSatu - $opsiEmpat) <= $threshold) {
+  } else if (abs($opsiSatu - $opsiDua) <= $threshold && $opsiSatu > $opsiEmpat + $threshold) {
     return "Dominance-Conscientiousness";
-  } else if (abs($opsiDua - $opsiSatu) <= $threshold) {
-    return "Influence-Dominance";
-  } else if (abs($opsiDua - $opsiTiga) <= $threshold) {
+  } else if (abs($opsiSatu - $opsiTiga) <= $threshold && $opsiSatu > $opsiDua + $threshold) {
+    return "Dominance-Steadiness";
+  } else if (abs($opsiSatu - $opsiEmpat) <= $threshold && $opsiSatu > $opsiDua + $threshold) {
+    return "Dominance-Conscientiousness";
+  } else if (abs($opsiDua - $opsiTiga) <= $threshold && $opsiDua > $opsiSatu + $threshold && $opsiDua > $opsiEmpat + $threshold) {
     return "Influence-Steadiness";
-  } else if (abs($opsiDua - $opsiEmpat) <= $threshold) {
+  } else if (abs($opsiDua - $opsiEmpat) <= $threshold && $opsiDua > $opsiTiga + $threshold) {
     return "Influence-Conscientiousness";
-  } else if (abs($opsiTiga - $opsiSatu) <= $threshold) {
-    return "Steadiness-Dominance";
-  } else if (abs($opsiTiga - $opsiDua) <= $threshold) {
-    return "Steadiness-Influance";
-  } else if (abs($opsiTiga - $opsiEmpat) <= $threshold) {
+  } else if (abs($opsiTiga - $opsiEmpat) <= $threshold && $opsiTiga > $opsiSatu + $threshold && $opsiEmpat > $opsiDua + $threshold) {
     return "Steadiness-Conscientiousness";
-  } else if (abs($opsiEmpat - $opsiSatu) <= $threshold) {
-    return "Conscientiousness-Dominance";
-  } else if (abs($opsiEmpat - $opsiDua) <= $threshold) {
-    return "Conscientiousness-Influence";
-  } else if (abs($opsiEmpat - $opsiTiga) <= $threshold) {
-    return "Conscientiousness-Steadiness";
   } else {
     // Default case
     return "Lainnya";
   }
 }
-
 
 function kepribadian($data)
 {
@@ -234,15 +223,16 @@ function kepribadian($data)
       $counter['opsi_empat']++;
     }
   }
-    // Menentukan gaya belajar berdasarkan jumlah jawaban
-    $kepribadian = tentukanKepribadian($counter['opsi_satu'], $counter['opsi_dua'], $counter['opsi_tiga'], $counter['opsi_empat']);
+  
+  // Menentukan gaya belajar berdasarkan jumlah jawaban
+  $kepribadian = tentukanKepribadian($counter['opsi_satu'], $counter['opsi_dua'], $counter['opsi_tiga'], $counter['opsi_empat']);
 
-  $query = "INSERT INTO hasil_kepribadian (user, unik, level, soal_1, soal_2, soal_3, soal_4, soal_5, soal_6, soal_7, soal_8, soal_9, soal_10, soal_11, soal_12, kepribadian) VALUES ('$fullname', '$username', '$level', ";
+  $query = "INSERT INTO hasil_kepribadian (user, unik, level, soal_1, soal_2, soal_3, soal_4, soal_5, soal_6, soal_7, soal_8, soal_9, soal_10, soal_11, soal_12, soal_13, soal_14, soal_15, kepribadian) VALUES ('$fullname', '$username', '$level', ";
 
   foreach ($jawaban as $index => $jawaban) {
     $query .= "'$jawaban'";
 
-    if ($index < 11) {
+    if ($index < count($data['checkboxGroup']) - 1) {
       $query .= ", ";
     }
   }
@@ -251,21 +241,24 @@ function kepribadian($data)
 
   mysqli_query($conn, $query);
 
-  return $kepribadian;
+  // Menambahkan hasil kepribadian ke dalam data yang dikembalikan
+  $data['kepribadian'] = $kepribadian;
+  return $data;
 }
 
-if(isset($_POST["submitKepribadian"])) {
-
-  $kepribadian = kepribadian($_POST);
-
+if (isset($_POST["submitKepribadian"])) {
   // cek apakah tombol submit sudah ditekan atau belum
-  if(kepribadian($_POST) > 0 ) {
-    $_SESSION['hasilKepribadian'] = true;
-    header("Location: ../pages/hasilKepribadian.php?kepribadian=" . urlencode($kepribadian));
+
+  $data = $_POST;
+  $data = kepribadian($data);
+  
+  if ($data['kepribadian'] != 'Lainnya') {
+    // Redirect to the respective page based on the kepribadian value
+    header("Location: ../pages/hasilKepribadian.php?kepribadian=" . urlencode($data['kepribadian']));
     exit();
   } else {
-    $_SESSION['hasilKepribadian'] = true;
-    header("Location: ../pages/hasilKepribadian.php?kepribadian=" . urlencode($kepribadian));
+    // Redirect to the error page
+    header("Location: ../views/error.php");
     exit();
   }
 }

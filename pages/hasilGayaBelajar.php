@@ -82,3 +82,4 @@ $gayaBelajar = isset($_GET['gaya_belajar']) ? $_GET['gaya_belajar'] : '';
         </div>
     </div>
 </div>
+<?php require '../views/layouts/footer.php'; ?>

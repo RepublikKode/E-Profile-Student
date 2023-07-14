@@ -1,9 +1,26 @@
+<?php require '../views/layouts/session.php'; ?>
 <?php
-session_start();
 require '../functions/functions.php';
 if (!isset($_SESSION["login"])) {
   header('Location: login.php');
 }
+
+if(isset($_SESSION['loginId'])) {
+  $loginId = $_SESSION['loginId'];
+
+  // Memeriksa apakah gayaBelajar masih NULL
+  $query = "SELECT gayaBelajar FROM users WHERE id = '$loginId' AND gayaBelajar IS NOT NULL";
+  $result = $conn->query($query);
+
+  // Jika ada hasil yang ditemukan, redirect ke profile.php
+  if($result->num_rows > 0) {
+    header("Location: profile.php");
+    exit;
+  }
+}
+
+
+
 ?>
 <?php require '../views/layouts/header.php'; ?>
 <?php require '../views/layouts/navbar.php'; ?>
@@ -41,6 +58,7 @@ if (!isset($_SESSION["login"])) {
       <img src="../assets/banner/banner-soal.png" class="rounded-4 shadow-sm" width="100%">
     </div>
     <form action="" method="post" class="d-flex flex-column my-3 gap-3">
+      <input type="hidden" name="id" id="id" value="<?= $_SESSION['loginId']; ?>">
       <?php foreach ($getSoal as $index => $gs) : ?>
         <div class="d-flex flex-column shadow-md rounded p-3 bg-white shadow-lg" style="width: 100%;">
           <div class="mb-3">

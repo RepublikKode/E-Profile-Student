@@ -7,7 +7,7 @@ if (!isset($_SESSION["login"])) {
 }
 
 if($_SESSION['level'] === 'siswa') {
-  header('Location: ../views/error.php');
+  header('Location: ../views/');
 }
 ?>
 <?php require '../views/layouts/header.php'; ?>
@@ -57,7 +57,7 @@ if (isset($_POST['findUser'])) {
       <button id="findUser" name="findUser" class="btn btn-primary rounded-0">Cari</button>
     </form>
     <div class="overflow-auto">
-      <table class="table caption-top text-center">
+      <table class="table caption-top text-center" style="font-size: 1.5vh;">
         <caption>List of users(<?= count($getKepribadian); ?>)</caption>
         <thead>
           <tr>

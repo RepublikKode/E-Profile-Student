@@ -5,6 +5,21 @@ if (!isset($_SESSION["login"])) {
   header('Location: login.php');
   
 }
+
+if(isset($_SESSION['loginId'])) {
+  $loginId = $_SESSION['loginId'];
+
+  // Memeriksa apakah kepribadian masih NULL
+  $query = "SELECT kepribadian FROM users WHERE id = '$loginId' AND kepribadian IS NOT NULL";
+  $result = $conn->query($query);
+
+  // Jika ada hasil yang ditemukan, redirect ke profile.php
+  if($result->num_rows > 0) {
+    header("Location: profile.php");
+    exit;
+  }
+}
+
 ?>
 <?php require '../views/layouts/header.php'; ?>
 <?php require '../views/layouts/navbar.php'; ?>

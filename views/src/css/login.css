@@ -2,34 +2,45 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
   background: linear-gradient(120deg, #2980b9, #8e44ad);
+  width: 100%;
   height: 100vh;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 .center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
   width: 400px;
   background: white;
   border-radius: 10px;
+  margin: 15px;
 }
+
 .center h1 {
   text-align: center;
   padding: 0 0 10px 0;
   border-bottom: 1px solid silver;
   margin-bottom: 2px;
 }
+
 .center form {
   padding: 0 40px;
   box-sizing: border-box;
 }
+
 form .txt_field {
   position: relative;
   border-bottom: 2px solid #adadad;
   margin: 30px 0;
 }
+
 .txt_field input {
   width: 100%;
   padding: 0 5px;
@@ -39,6 +50,7 @@ form .txt_field {
   background: none;
   outline: none;
 }
+
 .txt_field label {
   position: absolute;
   top: 50%;
@@ -49,6 +61,7 @@ form .txt_field {
   pointer-events: none;
   transition: 0.5s;
 }
+
 .txt_field span::before {
   content: "";
   position: absolute;
@@ -59,23 +72,28 @@ form .txt_field {
   background: #2691d9;
   transition: 0.5s;
 }
+
 .txt_field input:focus ~ label,
 .txt_field input:valid ~ label {
   top: -5px;
   color: #2691d9;
 }
+
 .txt_field input:focus ~ span::before,
 .txt_field input:valid ~ span::before {
   width: 100%;
 }
+
 .signup_link2 {
   margin: -5px 0 20px 5px;
   color: #2691d9;
   cursor: pointer;
 }
+
 .signup_link2:hover {
   text-decoration: underline;
 }
+
 input[type="submit"] {
   width: 100%;
   height: 50px;
@@ -88,20 +106,32 @@ input[type="submit"] {
   cursor: pointer;
   outline: none;
 }
+
 input[type="submit"] {
   border-color: #2691d9;
   transition: 0.5s;
 }
+
 .signup_link {
   margin: 30px 0;
   text-align: center;
   font-size: 16px;
   color: #666666;
 }
+
 .signup_link a {
   color: #2691d9;
   text-decoration: none;
 }
+
 .signup_link a:hover {
   text-decoration: underline;
+}
+
+/* Responsive Styles */
+
+@media screen and (max-width: 600px) {
+  .center {
+    width: 400px;
+  }
 }

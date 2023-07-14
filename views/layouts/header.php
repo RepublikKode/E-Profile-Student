@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../src/css/footer.css">
     <link rel="stylesheet" href="../views/src/css/footer.css">
     <link rel="stylesheet" href="views/src/css/footer.css">
+    <link rel="stylesheet" href="../views/src/node_modules/sweetalert2/dist/sweetalert2.min.css" />
     <style>
         textarea:focus {
             border: none;

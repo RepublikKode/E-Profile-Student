@@ -1,13 +1,13 @@
 <?php require '../views/layouts/session.php' ?>
-<?php 
-require '../functions/functions.php'; 
+<?php
+require '../functions/functions.php';
 
 if (!isset($_SESSION["login"])) {
   header('Location: ../pages/login.php');
 }
 
-if($_SESSION['level'] === 'siswa') {
-  header('Location: ../views/error.php');
+if ($_SESSION['level'] === 'siswa') {
+  header('Location: ../views/');
 }
 
 
@@ -56,12 +56,27 @@ if (isset($_POST['findPribadi'])) {
 </style>
 <div class="container" style="width: 100%; height: max-content; min-height: 70vh;">
   <div class="card my-5 p-3 shadow-md">
-  <form action="" method="post" class="d-flex flex-row">
-      <input id="cariPribadi" name="cariPribadi" type="seacrh" class="w-100 rounded-start border-1 border shadow-sm px-1" placeholder="Cari" style="outline: none;">
-      <button id="findPribadi" name="findPribadi" class="btn btn-primary rounded-0">Cari</button>
+    <form action="" method="post" class="d-flex flex-row">
+      <div class="input-group">
+        <select id="filterOption" name="filterOption" class="form-select rounded-start shadow-sm" style="outline: none;" onchange="filterTable()">
+          <option selected>Filter</option>
+          <option value="dominance">Dominance</option>
+          <option value="influence">Influence</option>
+          <option value="steadiness">Steadiness</option>
+          <option value="conscientiousness">Conscientiousness</option>
+          <option value="dominance-influence">Dominance-Influence</option>
+          <option value="dominance-conscientiousness">Dominance-Conscientiousness</option>
+          <option value="dominance-steadiness">Dominance-Steadiness</option>
+          <option value="influence-steadiness">Influence-Steadiness</option>
+          <option value="influence-conscientiousness">Influence-Conscientiousness</option>
+          <option value="steadiness-conscientiousness">Steadiness-Conscientiousness</option>
+        </select>
+        <input id="cariUser" name="cariUser" type="search" class="form-control rounded-end shadow-sm px-1" placeholder="Cari" style="outline: none;">
+        <button id="findUser" name="findUser" class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+      </div>
     </form>
     <div class="overflow-auto">
-      <table class="table caption-top text-center" style="font-size: 1vh;">
+      <table id="data-table" class="table caption-top text-center" style="font-size: 1.5vh;">
         <caption>List of users(<?= count($getKepribadian); ?>)</caption>
         <thead>
           <tr>
@@ -69,20 +84,18 @@ if (isset($_POST['findPribadi'])) {
             <th scope="col">Fullname</th>
             <th scope="col">Username</th>
             <th scope="col">Tipe Kepribadian</th>
-            <th scope="col">Aksi</th>
           </tr>
         </thead>
         <tbody>
+          <?php $i = 1; ?>
           <?php foreach ($getKepribadian as $gk) : ?>
             <tr>
-              <th scope="row"><?= $gk['id']; ?></th>
+              <th scope="row"><?= $i; ?></th>
               <td><?= $gk['user']; ?></td>
               <td><?= $gk['unik']; ?></td>
               <td><?= $gk['kepribadian']; ?></td>
-              <td>
-                <a href="siswaKepribadian.php?id=<?= $gk['id']; ?>" class="btn btn-warning" style="font-size: 1vh;">Cek Kepribadian</a>
-              </td>
             </tr>
+            <?php $i++; ?>
           <?php endforeach; ?>
         </tbody>
       </table>
@@ -105,3 +118,38 @@ if (isset($_POST['findPribadi'])) {
   </div>
 </div>
 <?php require '../views/layouts/footer.php'; ?>
+<script>
+  function filterTable() {
+    var filterOption = document.getElementsByName("filterOption")[0];
+    var selectedOption = filterOption.value;
+    var table = document.getElementById("data-table");
+    var rows = table.getElementsByTagName("tr");
+
+    for (var i = 0; i < rows.length; i++) {
+      var cells = rows[i].getElementsByTagName("td");
+      var display = false;
+
+      for (var j = 0; j < cells.length; j++) {
+        var cell = cells[j];
+
+        if (
+          cell.innerHTML.toLowerCase().includes(selectedOption) ||
+          selectedOption === "filter"
+        ) {
+          display = true;
+          break;
+        }
+      }
+
+      if (display) {
+        rows[i].style.display = "";
+      } else {
+        rows[i].style.display = "none";
+      }
+    }
+
+    // Tampilkan juga elemen <th>
+    var headerRow = table.getElementsByTagName("thead")[0].getElementsByTagName("tr")[0];
+    headerRow.style.display = "";
+  }
+</script>

@@ -114,10 +114,12 @@ if (isset($_POST['findPribadi'])) {
           <a href="?halaman=<?= $halamanAktif + 1; ?>">&gt;</a>
         <?php endif; ?>
       </div>
+      <a href="#" id="downloadLink" class="btn btn-success mt-3">Download Excel</a>
     </div>
   </div>
 </div>
 <?php require '../views/layouts/footer.php'; ?>
+<script src="node_modules/exceljs/dist/exceljs.min.js"></script>
 <script>
   function filterTable() {
     var filterOption = document.getElementsByName("filterOption")[0];
@@ -152,4 +154,81 @@ if (isset($_POST['findPribadi'])) {
     var headerRow = table.getElementsByTagName("thead")[0].getElementsByTagName("tr")[0];
     headerRow.style.display = "";
   }
+
+  function downloadExcel() {
+    // Membuat objek Workbook
+    var workbook = new ExcelJS.Workbook();
+    var worksheet = workbook.addWorksheet("Data");
+
+    // Mendapatkan data dari tabel
+    var table = document.getElementById("data-table");
+    var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+
+    // Mengatur header kolom
+    var headerRow = table.getElementsByTagName("thead")[0].getElementsByTagName("tr")[0];
+    var headerCells = headerRow.getElementsByTagName("th");
+
+    var headerData = [];
+    for (var i = 0; i < headerCells.length; i++) {
+      headerData.push(headerCells[i].innerText);
+    }
+
+    worksheet.getRow(1).values = headerData;
+    worksheet.getRow(1).font = {
+      color: {
+        argb: 'FFFFFFFF'
+      }, // Warna teks putih
+      bold: true
+    };
+    worksheet.getRow(1).fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: {
+        argb: 'FFFF0000'
+      } // Warna background merah
+    };
+
+    // Menambahkan data ke worksheet
+    var rowIndex = 2; // Mulai pada baris ke-2 setelah header
+    for (var i = 0; i < rows.length; i++) {
+      var cells = rows[i].getElementsByTagName("td");
+      var rowData = [];
+
+      for (var j = 0; j < cells.length; j++) {
+        rowData.push(cells[j].innerText);
+      }
+
+      worksheet.getRow(rowIndex).values = rowData;
+      rowIndex++;
+    }
+
+    // Mengatur nama file Excel yang akan diunduh
+    var filename = "data_excel.xlsx";
+
+    // Mengonversi file Excel ke blob
+    workbook.xlsx.writeBuffer().then(function(buffer) {
+      var blob = new Blob([buffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      });
+
+      // Membuat URL objek blob
+      var url = window.URL.createObjectURL(blob);
+
+      // Mendapatkan tombol "Download Excel"
+      var downloadLink = document.getElementById("downloadLink");
+
+      // Menetapkan atribut href dan download pada tombol "Download Excel"
+      downloadLink.href = url;
+      downloadLink.download = filename;
+
+      // Simulasi klik tombol "Download Excel"
+      downloadLink.click();
+
+      // Menghapus URL objek blob
+      window.URL.revokeObjectURL(url);
+    });
+  }
+
+  // Menambahkan event listener pada tombol "Download Excel"
+  document.getElementById("downloadLink").addEventListener("click", downloadExcel);
 </script>

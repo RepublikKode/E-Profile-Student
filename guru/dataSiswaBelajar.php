@@ -75,7 +75,6 @@ if (isset($_POST['findBelajar'])) {
         <caption>List of users(<?= count($siswa); ?>)</caption>
         <thead>
           <tr>
-            <th scope="col">#</th>
             <th scope="col">Fullname</th>
             <th scope="col">Username</th>
             <th scope="col">Tipe Belajar</th>
@@ -83,11 +82,11 @@ if (isset($_POST['findBelajar'])) {
         </thead>
         <tbody>
           <?php foreach ($siswa as $gh) : ?>
-            <th scope="row"><?= $gh['id']; ?></th>
-            <td><?= $gh['user']; ?></td>
-            <td><?= $gh['unik'] ?></td>
-            <td><?= $gh['gaya_belajar']; ?></td>
-          </tbody>
+            <tr>
+              <td><?= $gh['user']; ?></td>
+              <td><?= $gh['unik'] ?></td>
+              <td><?= $gh['gaya_belajar']; ?></td>
+            </tr>
           <?php endforeach; ?>
       </table>
       <div class="pagination-box">
@@ -110,6 +109,7 @@ if (isset($_POST['findBelajar'])) {
   </div>
 </div>
 <?php require '../views/layouts/footer.php'; ?>
+<script src="node_modules/exceljs/dist/exceljs.min.js"></script>
 <script>
   function filterTable() {
     var filterOption = document.getElementsByName("filterOption")[0];
@@ -154,18 +154,6 @@ if (isset($_POST['findBelajar'])) {
   var table = document.getElementById("data-table");
   var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 
-  // Menambahkan data ke worksheet
-  for (var i = 0; i < rows.length; i++) {
-    var cells = rows[i].getElementsByTagName("td");
-    var rowData = [];
-
-    for (var j = 0; j < cells.length; j++) {
-      rowData.push(cells[j].innerText);
-    }
-
-    worksheet.addRow(rowData);
-  }
-
   // Mengatur header kolom
   var headerRow = table.getElementsByTagName("thead")[0].getElementsByTagName("tr")[0];
   var headerCells = headerRow.getElementsByTagName("th");
@@ -175,8 +163,30 @@ if (isset($_POST['findBelajar'])) {
     headerData.push(headerCells[i].innerText);
   }
 
-  worksheet.addRow(headerData);
-  worksheet.getRow(1).font = { bold: true };
+  worksheet.getRow(1).values = headerData;
+  worksheet.getRow(1).font = {
+    color: { argb: 'FFFFFFFF' }, // Warna teks putih
+    bold: true
+  };
+  worksheet.getRow(1).fill = {
+    type: 'pattern',
+    pattern: 'solid',
+    fgColor: { argb: 'FFFF0000' } // Warna background merah
+};
+
+  // Menambahkan data ke worksheet
+  var rowIndex = 2; // Mulai pada baris ke-2 setelah header
+  for (var i = 0; i < rows.length; i++) {
+    var cells = rows[i].getElementsByTagName("td");
+    var rowData = [];
+
+    for (var j = 0; j < cells.length; j++) {
+      rowData.push(cells[j].innerText);
+    }
+
+    worksheet.getRow(rowIndex).values = rowData;
+    rowIndex++;
+  }
 
   // Mengatur nama file Excel yang akan diunduh
   var filename = "data_excel.xlsx";

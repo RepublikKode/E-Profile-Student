@@ -105,6 +105,7 @@ input[type="submit"] {
   font-weight: 700;
   cursor: pointer;
   outline: none;
+  margin-bottom: 30px;
 }
 
 input[type="submit"] {

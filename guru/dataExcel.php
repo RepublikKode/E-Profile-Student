@@ -2,6 +2,14 @@
 session_start();
 require '../functions/functions.php';
 
+if (!isset($_SESSION["login"])) {
+    header('Location: ../pages/login.php');
+  }
+
+  if ($_SESSION['level'] === 'siswa') {
+    header('Location: ../views/');
+}
+
 // Mengambil data kuesioner dengan JOIN ke tabel users
 $query = "SELECT k.*, u.gayaBelajar, u.kepribadian, u.kecerdasan
           FROM kuesioner k

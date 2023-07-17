@@ -618,5 +618,14 @@ function angketSiswa($data) {
   
 }
 
+if(isset($_POST['submitAngket'])) {
+  if(angketSiswa($_POST) > 0) {
+    echo "<script>
+    alert('Angket di Submit');
+    window.location.href = '../';
+    </script>";
+  }
+}
+
 
 ?>

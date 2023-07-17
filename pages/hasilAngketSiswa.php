@@ -196,6 +196,7 @@ $getUser = query("SELECT * FROM users WHERE id = '$id'")[0];
         </div>
       </div>
     </div>
+    <a class="btn btn-primary" href="cetakAngket.php?id=<?= $_SESSION['loginId']; ?>">Download Word</a>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

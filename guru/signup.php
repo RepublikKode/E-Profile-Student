@@ -2,6 +2,10 @@
 session_start();
 require '../functions/functions.php';
 
+if (!isset($_SESSION["login"])) {
+    header('Location: ../pages/login.php');
+  }
+
 // Ketika tombol button register ditekan
 if (isset($_POST["register"])) {
     $result = register($_POST);

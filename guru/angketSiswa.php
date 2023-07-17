@@ -16,6 +16,10 @@ if (!$getAngket) {
   exit; // Hentikan eksekusi kode selanjutnya
 }
 
+if ($_SESSION['level'] === 'siswa') {
+  header('Location: ../');
+}
+
 ?>
 <?php require '../views/layouts/header.php' ?>
 <?php require '../views/layouts/navbar.php' ?>

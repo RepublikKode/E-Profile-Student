@@ -23,6 +23,9 @@ if(isset($_SESSION['loginId'])) {;
   };
 };
 
+if ($_SESSION['level'] === 'guru') {
+    header('Location: ../');
+}
 
 $getUser = query("SELECT * FROM users WHERE id = '$id'")[0];
 
@@ -201,7 +204,7 @@ $getUser = query("SELECT * FROM users WHERE id = '$id'")[0];
       <label for="alasanMinat">Alasan</label>
     </div>
     <div>
-      <button id="submitMinat" name="submitAngket" class="btn btn-success">Submit</button>
+      <button id="submitAngket" name="submitAngket" class="btn btn-success">Submit</button>
     </div>
     </form>
   </div>
